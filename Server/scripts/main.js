@@ -5,7 +5,7 @@ const path = require("path");
 const { exec } = require('child_process');
 
 var server = http.createServer(function(req, res) {
-    console.log("starting");
+    console.log("requested creation of a project");
     let startPath = ".." + path.sep + "projects";
     try{
         console.log("setting current directory inside of projects folder");
