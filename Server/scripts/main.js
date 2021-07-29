@@ -30,7 +30,7 @@ var server = http.createServer(function(req, res) {
                 exec("git init --bare");
                 res.writeHead(200);
                 verOb["projectName"] = prg;
-                verOb["path"] = startPath + path.sep + _path;
+                verOb["path"] = process.cwd(); // + path.sep + _path;
                 res.write(JSON.stringify(verOb));
                 process.chdir("..");
               }
