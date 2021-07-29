@@ -2,6 +2,8 @@ var http = require('http');
 const url = require('url');
 const fs = require('fs');
 const path = require("path");
+const os = require("os");
+const ip = require("ip");
 const { exec } = require('child_process');
 
 var server = http.createServer(function(req, res) {
@@ -13,6 +15,7 @@ var server = http.createServer(function(req, res) {
     }catch{
         return -1;
     }
+    console.log(req.url);
     const queryObject = url.parse(req.url,true).query;
     if(queryObject["projectName"] != null){
         let prg = queryObject["projectName"];
@@ -31,6 +34,16 @@ var server = http.createServer(function(req, res) {
                 res.writeHead(200);
                 verOb["projectName"] = prg;
                 verOb["path"] = process.cwd(); // + path.sep + _path;
+                
+                let userInfo = os.userInfo();
+                
+                verOb["git_repo"] = 
+                    userInfo.username + "@" + // utente
+                    String(ip.address(null, "ipv4")) +// host (indirizzo)
+                    ":" +
+                    verOb["path"];// path
+                
+                console.log(verOb["path"]);
                 res.write(JSON.stringify(verOb));
                 process.chdir("..");
               }
