@@ -5,10 +5,11 @@ const path = require("path");
 const { exec } = require('child_process');
 
 var server = http.createServer(function(req, res) {
-        res.end("");    
+    console.log("starting");
+    let startPath = ".." + path.sep + "projects";
     try{
-        let path = ".." + path.sep + "projects";
-        process.chdir(path);
+        console.log("setting current directory inside of projects folder");
+        process.chdir(startPath);
     }catch{
         return -1;
     }
@@ -16,16 +17,21 @@ var server = http.createServer(function(req, res) {
     if(queryObject["projectName"] != null){
         let prg = queryObject["projectName"];
         // creo il progetto
-        let path = "." + path.sep + prg + ".git";
+        let _path = prg + ".git";
         console.log(prg)
         // se non esiste la cartella creo la cartella con nome del progetto
-        if(!fs.existsSync(path)){
-            fs.mkdirSync(path);
+        if(!fs.existsSync(_path)){
+            fs.mkdirSync(_path);
             // dentro questa cartella creo il progetto git con init bare
             try {
-                process.chdir(path);
+                // creo oggetto json da restituire per verifiche
+                let verOb = new Object();
+                process.chdir(_path);
                 exec("git init --bare");
-                res.writeHead(200)
+                res.writeHead(200);
+                verOb["projectName"] = prg;
+                verOb["path"] = startPath + path.sep + _path;
+                res.write(JSON.stringify(verOb));
                 process.chdir("..");
               }
               catch (err) {
@@ -39,5 +45,6 @@ var server = http.createServer(function(req, res) {
     }else{
         res.writeHead(500);
     }
+    res.end("");
 });
 server.listen(8080);
