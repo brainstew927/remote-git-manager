@@ -18,7 +18,7 @@ var server = http.createServer(function(req, res) {
         let prg = queryObject["projectName"];
         // creo il progetto
         let _path = prg + ".git";
-        console.log(prg)
+        console.log("project name: " + prg);
         // se non esiste la cartella creo la cartella con nome del progetto
         if(!fs.existsSync(_path)){
             fs.mkdirSync(_path);
