@@ -1,0 +1,11 @@
+{
+  "name": "brainmanager",
+  "version": "1.0.0",
+  "description": "a utility which is used to create repository in a remote server to be used with git",
+  "main": "Server/scripts/main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "brainstew927",
+  "license": "MIT"
+}
