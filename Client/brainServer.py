@@ -4,6 +4,7 @@ import urllib.error
 import pickle
 import json
 from prettytable import PrettyTable
+import prettytable
 
 
 # later the command the user was trying to use will be passed as an argument
@@ -40,6 +41,7 @@ if __name__ == "__main__":
             print_help()
     if sys.argv[1] == "create":
         addr = ""
+        prjName = ""
         # if asked to create a project
         # get the server address
         if sys.argv[2] == "-r":
@@ -47,10 +49,11 @@ if __name__ == "__main__":
             addr = server_dict[sys.argv[3]]  
             # get the project name
             prjName = sys.argv[4]
-
+        else:
+            addr = sys.argv[2]
+            prjName = sys.argv[3]
 
         url = "http://" +addr + ":8080?projectName=" + prjName
-        print(url)
         # query the server
         try:
             contents = urllib.request.urlopen(url)
@@ -60,9 +63,10 @@ if __name__ == "__main__":
             else:
                 print("project created succesfully, following are the project information:")
                 info = json.loads(contents.read().decode("utf-8"))
+                p = PrettyTable(["name", "value"])
                 for k in info:
-                    print(f"\t{k}:\t{info[k]}")
-                
+                    p.add_row([k, info[k]])
+                print(p)
         except urllib.error.HTTPError as e:
             print(f"error while requesting project creation: {e.getcode()}")
     with open("data/servers", "wb") as f:
