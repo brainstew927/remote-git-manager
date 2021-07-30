@@ -1,2 +1,4 @@
 node_modules
 Server/projects/*
+Client/
+!Client/brainServer.py
